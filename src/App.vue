@@ -1,9 +1,15 @@
 <template>
     <div id="app">
-        <header><h1>OST player</h1></header>
+        <header>
+            <h1>OST</h1>
+
+            <span>player</span>
+        </header>
+
         <div class="image">
+            <div class="overlay"></div>
             <h2 class="song-title">
-                {{ current.title }} <br />
+                [ {{ current.title }} ]<br />
                 <span> {{ current.artist }} </span>
             </h2>
         </div>
@@ -29,7 +35,7 @@
                 <button
                     v-for="song in songs"
                     :key="song.src"
-                    @click="play(song)"
+                    @click="play(song), timestamp()"
                     :class="song.src == current.src ? 'song playing' : 'song'"
                 >
                     {{ song.title }} - {{ song.artist }}
@@ -67,6 +73,7 @@ export default {
             player: new Audio(),
         };
     },
+
     methods: {
         play(song) {
             if (typeof song.src != "undefined") {
@@ -100,7 +107,6 @@ export default {
     created() {
         this.current = this.songs[this.index];
         this.player.src = this.current.src;
-        //this.player.play();
     },
 };
 </script>
@@ -110,6 +116,7 @@ export default {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: "Bebas Neue", cursive;
 }
 body {
     background-color: #0e0a01;
@@ -118,11 +125,22 @@ body {
 }
 header {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 15px;
     background-color: #212121;
     color: #fff;
+}
+h1 {
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    border-bottom: 1px solid white;
+}
+span {
+    letter-spacing: 5px;
+    padding-top: 0px;
+    font-size: 18px;
 }
 main {
     width: 100%;
@@ -137,15 +155,23 @@ main {
     height: 55vh;
     min-width: 100vw;
 }
-.song-title {
-    color: white;
-    font-size: 32px;
-    font-weight: 700;
-    text-transform: uppercase;
-    text-align: center;
+.overlay {
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.575), rgba(255, 255, 255, 0));
 }
 .song-title {
+    position: relative;
+    z-index: 2;
+    color: rgb(214, 184, 16);
     padding-top: 100px;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.301);
+    font-size: 2.1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-align: center;
 }
 .song-title span {
     font-weight: 400;
@@ -187,7 +213,9 @@ button:hover {
     text-align: center;
 }
 .playlist .song {
+    letter-spacing: 2.5px;
     display: block;
+    color: whitesmoke;
     width: 100%;
     padding: 15px;
     font-size: 20px;
@@ -195,18 +223,12 @@ button:hover {
     cursor: pointer;
 }
 .playlist .song:hover {
-    color: #fff;
+    color: rgb(255, 252, 206);
 }
 .playlist .song.playing {
-    color: #fff;
+    color: rgb(214, 184, 16);
     border-radius: 10px;
-    background-image: linear-gradient(
-        to right,
-        #e8ece5,
-        #a6b5b8,
-        #8390a0,
-        #84a0a4
-    );
+    border: 1px solid rgba(255, 255, 255, 0.63);
 }
 .song {
     color: white;
